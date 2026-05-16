@@ -1,0 +1,15 @@
+# Build output
+target/
+*.class
+*.log
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Environment/config files
+.env
