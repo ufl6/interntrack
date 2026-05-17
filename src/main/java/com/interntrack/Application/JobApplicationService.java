@@ -2,6 +2,7 @@ package com.interntrack.application;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -53,5 +54,12 @@ public class JobApplicationService {
                         "Online assessment stage. Practise problem solving."
                 )
         );
+    }
+
+    public Optional<JobApplication> getApplicationById(Long id) {
+        return getAllApplications()
+                .stream()
+                .filter(application -> application.getId().equals(id))
+                .findFirst();
     }
 }
