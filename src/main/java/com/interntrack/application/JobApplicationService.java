@@ -77,4 +77,28 @@ public class JobApplicationService {
         applications.add(application);
         return application;
     }
+
+    public Optional<JobApplication> updateApplication(Long id, JobApplication updatedApplication) {
+        Optional<JobApplication> existingApplicationOptional = getApplicationById(id);
+
+        if (existingApplicationOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        JobApplication existingApplication = existingApplicationOptional.get();
+
+        existingApplication.setCompanyName(updatedApplication.getCompanyName());
+        existingApplication.setRoleTitle(updatedApplication.getRoleTitle());
+        existingApplication.setJobType(updatedApplication.getJobType());
+        existingApplication.setLocation(updatedApplication.getLocation());
+        existingApplication.setWorkMode(updatedApplication.getWorkMode());
+        existingApplication.setSalary(updatedApplication.getSalary());
+        existingApplication.setJobLink(updatedApplication.getJobLink());
+        existingApplication.setStatus(updatedApplication.getStatus());
+        existingApplication.setDeadline(updatedApplication.getDeadline());
+        existingApplication.setDateApplied(updatedApplication.getDateApplied());
+        existingApplication.setNotes(updatedApplication.getNotes());
+
+        return Optional.of(existingApplication);
+    }
 }
