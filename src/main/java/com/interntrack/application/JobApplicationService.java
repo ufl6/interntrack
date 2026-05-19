@@ -101,4 +101,8 @@ public class JobApplicationService {
 
         return Optional.of(existingApplication);
     }
+
+    public boolean deleteApplication(Long id) {
+        return applications.removeIf(application -> application.getId().equals(id));
+    }
 }
