@@ -64,6 +64,27 @@ public class JobApplicationService {
         return applications;
     }
 
+    public List<JobApplication> searchApplications(String searchTerm) {
+        if (searchTerm == null || searchTerm.isBlank()) {
+            return getAllApplications();
+        }
+
+        String lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+        return applications.stream()
+                .filter(application
+                        -> containsIgnoreCase(application.getCompanyName(), lowerCaseSearchTerm)
+                || containsIgnoreCase(application.getRoleTitle(), lowerCaseSearchTerm)
+                || containsIgnoreCase(application.getLocation(), lowerCaseSearchTerm)
+                || containsIgnoreCase(application.getNotes(), lowerCaseSearchTerm)
+                )
+                .toList();
+    }
+
+    private boolean containsIgnoreCase(String value, String searchTerm) {
+        return value != null && value.toLowerCase().contains(searchTerm);
+    }
+
     public Optional<JobApplication> getApplicationById(Long id) {
         return applications
                 .stream()

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,8 +23,8 @@ public class JobApplicationController {
     }
 
     @GetMapping("/api/applications")
-    public List<JobApplication> getApplications() {
-        return jobApplicationService.getAllApplications();
+    public List<JobApplication> getApplications(@RequestParam(required = false) String search) {
+        return jobApplicationService.searchApplications(search);
     }
 
     @GetMapping("/api/applications/{id}")
