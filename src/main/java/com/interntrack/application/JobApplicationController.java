@@ -23,7 +23,14 @@ public class JobApplicationController {
     }
 
     @GetMapping("/api/applications")
-    public List<JobApplication> getApplications(@RequestParam(required = false) String search) {
+    public List<JobApplication> getApplications(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) ApplicationStatus status
+    ) {
+        if (status != null) {
+            return jobApplicationService.filterApplicationsByStatus(status);
+        }
+
         return jobApplicationService.searchApplications(search);
     }
 

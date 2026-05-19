@@ -92,6 +92,16 @@ public class JobApplicationService {
                 .findFirst();
     }
 
+    public List<JobApplication> filterApplicationsByStatus(ApplicationStatus status) {
+        if (status == null) {
+            return getAllApplications();
+        }
+
+        return applications.stream()
+                .filter(application -> application.getStatus() == status)
+                .toList();
+    }
+
     public JobApplication createApplication(JobApplication application) {
         application.setId(nextId);
         nextId++;
