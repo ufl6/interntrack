@@ -64,23 +64,6 @@ public class JobApplicationService {
         return applications;
     }
 
-    public List<JobApplication> searchApplications(String searchTerm) {
-        if (searchTerm == null || searchTerm.isBlank()) {
-            return getAllApplications();
-        }
-
-        String lowerCaseSearchTerm = searchTerm.toLowerCase();
-
-        return applications.stream()
-                .filter(application
-                        -> containsIgnoreCase(application.getCompanyName(), lowerCaseSearchTerm)
-                || containsIgnoreCase(application.getRoleTitle(), lowerCaseSearchTerm)
-                || containsIgnoreCase(application.getLocation(), lowerCaseSearchTerm)
-                || containsIgnoreCase(application.getNotes(), lowerCaseSearchTerm)
-                )
-                .toList();
-    }
-
     private boolean containsIgnoreCase(String value, String searchTerm) {
         return value != null && value.toLowerCase().contains(searchTerm);
     }
@@ -90,16 +73,6 @@ public class JobApplicationService {
                 .stream()
                 .filter(application -> application.getId().equals(id))
                 .findFirst();
-    }
-
-    public List<JobApplication> filterApplicationsByStatus(ApplicationStatus status) {
-        if (status == null) {
-            return getAllApplications();
-        }
-
-        return applications.stream()
-                .filter(application -> application.getStatus() == status)
-                .toList();
     }
 
     public JobApplication createApplication(JobApplication application) {
@@ -135,5 +108,39 @@ public class JobApplicationService {
 
     public boolean deleteApplication(Long id) {
         return applications.removeIf(application -> application.getId().equals(id));
+    }
+
+    public List<JobApplication> filterApplications(
+            String searchTerm,
+            ApplicationStatus status
+    ) {
+        String normalisedSearch = searchTerm == null
+                ? ""
+                : searchTerm.trim().toLowerCase();
+
+        return applications.stream()
+                .filter(application
+                        -> status == null || application.getStatus() == status
+                )
+                .filter(application
+                        -> normalisedSearch.isBlank()
+                || containsIgnoreCase(
+                        application.getCompanyName(),
+                        normalisedSearch
+                )
+                || containsIgnoreCase(
+                        application.getRoleTitle(),
+                        normalisedSearch
+                )
+                || containsIgnoreCase(
+                        application.getLocation(),
+                        normalisedSearch
+                )
+                || containsIgnoreCase(
+                        application.getNotes(),
+                        normalisedSearch
+                )
+                )
+                .toList();
     }
 }
